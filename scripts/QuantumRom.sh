@@ -2439,6 +2439,12 @@ GEN_FILE_CONTEXTS() {
     local EXTRACTED_FIRM_DIR="$1"
     local PARTITION="$2"
 
+	local CONTEXT="u:object_r:system_file:s0"
+        
+    if [[ "$PARTITION" == odm* || "$PARTITION" == vendor* ]]; then
+        CONTEXT="u:object_r:vendor_file:s0"
+    fi
+
     [ ! -d "${EXTRACTED_FIRM_DIR}/$PARTITION" ] && {
         echo -e "- Partition not found: $PARTITION"
         return 1
@@ -2493,12 +2499,6 @@ GEN_FILE_CONTEXTS() {
 
         [[ -n "${EXISTING[$ESCAPED_PATH]-}" ]] && continue
 
-        local CONTEXT="u:object_r:system_file:s0"
-        
-        if [[ "$PARTITION" == odm* || "$PARTITION" == vendor* ]]; then
-            CONTEXT="u:object_r:vendor_file:s0"
-        fi
-
         local BASENAME=$(basename "$item")
 
         if [[ "$BASENAME" == "linker" || "$BASENAME" == "linker64" ]]; then
@@ -2516,6 +2516,11 @@ GEN_FILE_CONTEXTS() {
         EXISTING["$ESCAPED_PATH"]=1
 
     done
+
+    if ! grep -qE "^/${PARTITION}\(/\.\*\)\?[[:space:]]" "$FILE_CONTEXTS"; then
+        printf "/%s(/.*)? %s\n" "$PARTITION" "$CONTEXT" >> "$FILE_CONTEXTS"
+        echo "- Added: /${PARTITION}(/.*)? ${CONTEXT}"
+    fi
 
     echo -e "- $PARTITION file_contexts generated"
 
