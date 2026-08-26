@@ -2617,9 +2617,13 @@ BUILD_IMG() {
             echo -e "Building f2fs image: $OUT_IMG"
 
             SIZE=$(((EXTRACTED_SIZE + 511) / 512 * 512))
-            EXTENDED_SIZE=$((SIZE + SIZE / 4))
+            EXTENDED_SIZE=$((SIZE + SIZE / 8))
 
-            dd if=/dev/zero of="$OUT_IMG" bs=512 count=$((EXTENDED_SIZE / 512))
+            if [ "$EXTENDED_SIZE" -lt "60000000" ]; then
+                EXTENDED_SIZE="60000000"
+            fi
+
+            truncate -s "$EXTENDED_SIZE" "$OUT_IMG"
 
             $make_f2fs \
                 -f -q \
@@ -2640,7 +2644,6 @@ BUILD_IMG() {
                 "$OUT_IMG"
 
             img2simg "$OUT_IMG" "${OUT_IMG}.sparse"
-
             rm -rf "$OUT_IMG"
             mv "${OUT_IMG}.sparse" "$OUT_IMG"
 
