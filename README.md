@@ -75,9 +75,6 @@ ption to True if your kernel BPF version is 5.4 (lower than 5.10).
 - The device model from which you want to port the ROM.
 - TARGET_DEVICE_CSC
 - The country/region code used to download the target device firmware.
-- TARGET_DEVICE_IMEI
-- Required to download the target device firmware from the Samsung server.
-- Change the IMEI if you want to change the target device.
 
 #### 6. OUTPUT_FILESYSTEM (erofs / ext4 / f2fs).
 My tool can build images in two formats:
@@ -112,22 +109,22 @@ In your forked repository, go to:
   - If you do not add the `GIT_TOKEN`, the built ROM info and link will not be added to your repository's Release section. You will get link only in runner output.
 
 ### Credits:
-#### 1. Samsung Firmware Downloader.
+#### 01. Samsung Firmware Downloader.
 - topjohnwu
 - https://github.com/topjohnwu/samloader-rs
 - Used for downloading Samsung firmware.
 
-#### 2. Multi Disabler.
+#### 02. Multi Disabler.
 - ianmacd
 - https://github.com/ianmacd/multidisabler-samsung
 - Used for disabling Samsung security and data encryption.
 
-#### 3. Bluetooth Library Patcher.
+#### 03. Bluetooth Library Patcher.
 - 3arthur6
-- https://github.com/3arthur6/BluetoothLibraryPatcher
+-https://github.com/3arthur6/BluetoothLibraryPatcher
 - Used for patching Samsung Bluetooth libraries.
 
-#### 4. UN1CA Project.
+#### 04. UN1CA Project.
 - salvogiangri
 - https://github.com/salvogiangri/UN1CA
 
@@ -137,28 +134,24 @@ In your forked repository, go to:
 - SSRM Patch (from UN1CA)
 - Some SELinux patches followed the UN1CA implementation.
 
-#### 5. App optimization stuck fix.
+#### 05. App optimization stuck fix.
 - ExtremeXT
 - https://github.com/ExtremeXT
 - For app optimization stuck fix.
 
-#### 6. Google photos unlimited backup.
-- VehanRajintha
-- https://github.com/VehanRajintha/Free-Unlimited-Google-Cloud-Backup-Magisk-Module
-
-#### 7. ChatGPT.
+#### 06. ChatGPT.
 - https://chat.openai.com
 - For providing bash commands and bash functions according to the project requirements and instructions.
 
-#### 8. GoFile Uploader.
+#### 07. GoFile Uploader.
 - Sushrut1101
 - https://github.com/Sushrut1101/GoFile-Upload
 
-#### 9. OMC Decoder.
+#### 08. OMC Decoder.
 - fei-ke
 - https://github.com/fei-ke/OmcTextDecoder
 
-#### 10. apktool.
+#### 09. apktool.
 - iBotPeaches
 - https://github.com/ibotpeaches/apktool
 
