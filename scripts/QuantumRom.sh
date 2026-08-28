@@ -1815,17 +1815,17 @@ APPLY_STOCK_CONFIG() {
     fi
 
 	if [ -z "$STOCK_DEVICE" ] || [ "$STOCK_DEVICE" = "None" ]; then
-        echo -e "No target device is set. Just modifying ROM without any device config."
+        echo -e "- No target device is set. Just modifying ROM without any device config."
         return 1
     fi
 
     if [ ! -f "${DEVICES_DIR}/$STOCK_DEVICE/config" ]; then
-        echo -e "Config file for $STOCK_DEVICE not found in $DEVICES_DIR"
+        echo -e "- Config file for $STOCK_DEVICE not found in $DEVICES_DIR"
         return 1
 	fi
 
     if [ ! -d "${EXTRACTED_FIRM_DIR}/system/system" ]; then
-        echo -e "No usable extracted firmware found"
+        echo -e "- No usable extracted firmware found"
         return 1
 	fi
 
@@ -1853,7 +1853,7 @@ APPLY_STOCK_CONFIG() {
 	if [ "$STOCK_DEVICE_CPU_ABILIST" != "$TARGET_ROM_CPU_ABILIST" ]; then
         echo "CPU ABI MISMATCH!"
         echo "STOCK DEVICE CPU ABI: $STOCK_DEVICE_CPU_ABILIST"
-        echo "TARGET ROM CPU ABI  : $TARGET_ROM_CPU_ABILIST"
+        echo "TARGET ROM CPU ABI: $TARGET_ROM_CPU_ABILIST"
         exit 1
     fi
 
