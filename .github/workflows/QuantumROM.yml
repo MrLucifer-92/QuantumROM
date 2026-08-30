@@ -38,11 +38,11 @@ on:
         description: "Add china smart manager (True/False)"
         required: true
         default: "True"
-     ADD_SAMSUNG_FLAGSHIP_APPS:
+      ADD_SAMSUNG_FLAGSHIP_APPS:
         description: "Add samsung flagship apps (True/False)"
         required: true
         default: "True"
-     ADD_CUSTOM_FEATURES:
+      ADD_CUSTOM_FEATURES:
         description: "Add samsung custom features (True/False)"
         required: true
         default: "True"
@@ -122,7 +122,7 @@ jobs:
 
       - name: Add samsung flagship apps
         run: |
-          if [ "${{ github.event.inputs.ADD_CHINA_SMART_MANAGER }}" = "True" ]; then
+          if [ "${{ github.event.inputs.ADD_SAMSUNG_FLAGSHIP_APPS }}" = "True" ]; then
               source "$(pwd)/scripts/QuantumRom.sh"
               ADD_SAMSUNG_FLAGSHIP_APPS "FW/${{ github.event.inputs.TARGET_DEVICE }}"
           fi
