@@ -113,7 +113,7 @@ jobs:
               DEBLOAT "FW/${{ github.event.inputs.TARGET_DEVICE }}"
           fi
       
-      - name: Apply stock configuration
+      - name: Apply stock device configuration
         run: |
           source "$(pwd)/scripts/debloat.sh"
           source "$(pwd)/scripts/QuantumRom.sh"
