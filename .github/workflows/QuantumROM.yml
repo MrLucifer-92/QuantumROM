@@ -46,6 +46,14 @@ on:
         description: "Add samsung custom features (True/False)"
         required: true
         default: "True"
+      PATCH_FLAG_SECURE:
+        description: "Bypass screenshot and screen record detection (True/False)"
+        required: true
+        default: "True"
+      PATCH_SECURE_FOLDER:
+        description: "Patch samsung secure folder (True/False)"
+        required: true
+        default: "True"
 
 jobs:
   build:
