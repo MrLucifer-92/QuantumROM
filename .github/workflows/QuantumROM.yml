@@ -113,7 +113,7 @@ jobs:
           TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
 
           source "$(pwd)/scripts/QuantumRom.sh"
-          EXTRACT_SUPER_IMG "$FIRM_DIR /$TARGET_DEVICE"
+          EXTRACT_SUPER_IMG "$FIRM_DIR/$TARGET_DEVICE"
 
       - name: Extract firmware img
         run: |
@@ -134,9 +134,13 @@ jobs:
 
       - name: Debloat Rom
         run: |
+         FIRM_DIR="$(pwd)/FW"
+         TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          
+          source "$(pwd)/scripts/debloat.sh"
+        
           if [ "${{ github.event.inputs.DEBLOAT_ROM }}" = "True" ]; then
-              source "$(pwd)/scripts/debloat.sh"
-              DEBLOAT "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+              DEBLOAT "$FIRM_DIR/$TARGET_DEVICE"
           fi
       
       - name: Apply stock device configuration
@@ -159,26 +163,38 @@ jobs:
           
       - name: Add china smart manager
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+
+          source "$(pwd)/scripts/QuantumRom.sh"
+
           if [ "${{ github.event.inputs.ADD_CHINA_SMART_MANAGER }}" = "True" ]; then
-              source "$(pwd)/scripts/QuantumRom.sh"
-              ADD_CHINA_SMART_MANAGER "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+              ADD_CHINA_SMART_MANAGER "$FIRM_DIR/$TARGET_DEVICE"
           fi
 
       - name: Add samsung flagship apps
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+
+          source "$(pwd)/scripts/QuantumRom.sh"
+
           if [ "${{ github.event.inputs.ADD_SAMSUNG_FLAGSHIP_APPS }}" = "True" ]; then
-              source "$(pwd)/scripts/QuantumRom.sh"
-              ADD_SAMSUNG_FLAGSHIP_APPS "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+              ADD_SAMSUNG_FLAGSHIP_APPS "$FIRM_DIR/$TARGET_DEVICE"
           fi
 
       - name: Add custom features
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+
+          source scripts/QuantumRom.sh
+          
           if [ "${{ github.event.inputs.ADD_CUSTOM_FEATURES }}" = "True" ]; then
-              source "$(pwd)/scripts/QuantumRom.sh"
-              APPLY_CUSTOM_FEATURES "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+              APPLY_CUSTOM_FEATURES "$FIRM_DIR/$TARGET_DEVICE"
           fi
 
-      - name: Decompile jar files if need
+      - name: Patch flag secure and secure folder
         run: |
           FIRM_DIR="$(pwd)/FW"
           WORK_DIR="$(pwd)/WORK"
@@ -191,12 +207,16 @@ jobs:
           source "$(pwd)/scripts/QuantumRom.sh"
           INSTALL_FRAMEWORK "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/framework-res.apk"
 
-          if [ "$STOCK_DEVICE" != "None" ]; then
-              DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/ssrm.jar" "$WORK_DIR"
+          if [ "$PATCH_FLAG_SECURE" = "TRUE" ] || [ "$PATCH_SECURE_FOLDER" = "True" ]; then
+              DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/services.jar" "$WORK_DIR"
           fi
 
           if [ "$PATCH_FLAG_SECURE" = "TRUE" ]; then
-              DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/services.jar" "$WORK_DIR"
+              PATCH_FLAG_SECURE "$FIRM_DIR/$TARGET_DEVICE" "$WORK_DIR/services"
+          fi
+
+          if [ "$PATCH_SECURE_FOLDER" = "TRUE" ]; then
+              PATCH_SECURE_FOLDER "$FIRM_DIR/$TARGET_DEVICE" "$WORK_DIR/services"
           fi
 
           if [ -f "$WORK_DIR/services.jar" ]; then
