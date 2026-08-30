@@ -104,7 +104,7 @@ jobs:
       - name: Decode omc
         run: |
           source "$(pwd)/scripts/QuantumRom.sh"
-          DECODE_OMC "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          DECODE_OMC "FW/${{ github.event.inputs.TARGET_DEVICE }}" "OUT"
 
       - name: Debloat Rom
         run: |
@@ -134,6 +134,19 @@ jobs:
               APPLY_CUSTOM_FEATURES "FW/${{ github.event.inputs.TARGET_DEVICE }}"
           fi
 
+      - name: Decompile jar files if need
+        run: |
+          FIRM_DIR="FW"
+          WORK_DIR="WORK"
+          APKTOOL="$(pwd)/bin/java/apktool.jar"
+          STOCK_DEVICE="${{ github.event.inputs.STOCK_DEVICE }}"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          source "$(pwd)/scripts/QuantumRom.sh"
+          INSTALL_FRAMEWORK "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/framework-res.apk"
+          if [ "$STOCK_DEVICE" != "None" ]; then
+              DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/ssrm.jar" "$WORK_DIR"
+          fi
+ 
       - name: Start Rom Build For ${{ github.event.inputs.STOCK_DEVICE }}
         run: |
           sudo bash run.sh \
