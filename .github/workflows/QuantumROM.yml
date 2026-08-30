@@ -30,6 +30,10 @@ on:
         description: "Compress IMG to XZ (True/False)"
         required: true
         default: "False"
+      DEBLOAT_ROM:
+        description: "Debloat downloaded rom (True/False)"
+        required: true
+        default: "True"
 
 jobs:
   build:
@@ -74,6 +78,28 @@ jobs:
         run: |
           source scripts/QuantumRom.sh
           EXTRACT_FIRMWARE "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+
+      - name: Extract super img
+        run: |
+          source "$(pwd)/scripts/QuantumRom.sh"
+          EXTRACT_SUPER_IMG "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+
+      - name: Extract firmware img
+        run: |
+          source "$(pwd)/scripts/debloat.sh"
+          EXTRACT_FIRMWARE_IMG "FW/${{ github.event.inputs.TARGET_DEVICE }}" "all"
+
+      - name: Decode omc
+        run: |
+          source "$(pwd)/scripts/QuantumRom.sh"
+          DECODE_OMC "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+
+      - name: Debloat Rom
+        run: |
+          if [ "${{ github.event.inputs.DEBLOAT_ROM }}" = "True" ]; then
+              source "$(pwd)/scripts/debloat.sh"
+              DEBLOAT "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          fi
 
       - name: Start Rom Build For ${{ github.event.inputs.STOCK_DEVICE }}
         run: |
