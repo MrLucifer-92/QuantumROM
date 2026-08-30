@@ -169,6 +169,7 @@ jobs:
           FIRM_DIR="$(pwd)/FW"
           WORK_DIR="$(pwd)/WORK"
           APKTOOL="$(pwd)/bin/java/apktool.jar"
+          DEVICES_DIR="$(pwd)/QuantumROM/Devices"
           STOCK_DEVICE="${{ github.event.inputs.STOCK_DEVICE }}"
           TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
 
