@@ -34,6 +34,18 @@ on:
         description: "Debloat downloaded rom (True/False)"
         required: true
         default: "True"
+      ADD_CHINA_SMART_MANAGER:
+        description: "Add china smart manager (True/False)"
+        required: true
+        default: "True"
+     ADD_SAMSUNG_FLAGSHIP_APPS:
+        description: "Add samsung flagship apps (True/False)"
+        required: true
+        default: "True"
+     ADD_CUSTOM_FEATURES:
+        description: "Add samsung custom features (True/False)"
+        required: true
+        default: "True"
 
 jobs:
   build:
@@ -99,6 +111,27 @@ jobs:
           if [ "${{ github.event.inputs.DEBLOAT_ROM }}" = "True" ]; then
               source "$(pwd)/scripts/debloat.sh"
               DEBLOAT "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          fi
+
+      - name: Add china smart manager
+        run: |
+          if [ "${{ github.event.inputs.ADD_CHINA_SMART_MANAGER }}" = "True" ]; then
+              source "$(pwd)/scripts/QuantumRom.sh"
+              ADD_CHINA_SMART_MANAGER "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          fi
+
+      - name: Add samsung flagship apps
+        run: |
+          if [ "${{ github.event.inputs.ADD_CHINA_SMART_MANAGER }}" = "True" ]; then
+              source "$(pwd)/scripts/QuantumRom.sh"
+              ADD_SAMSUNG_FLAGSHIP_APPS "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          fi
+
+      - name: Add custom features
+        run: |
+          if [ "${{ github.event.inputs.ADD_CUSTOM_FEATURES }}" = "True" ]; then
+              source "$(pwd)/scripts/QuantumRom.sh"
+              APPLY_CUSTOM_FEATURES "FW/${{ github.event.inputs.TARGET_DEVICE }}"
           fi
 
       - name: Start Rom Build For ${{ github.event.inputs.STOCK_DEVICE }}
