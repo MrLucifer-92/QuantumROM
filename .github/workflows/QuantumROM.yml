@@ -198,7 +198,7 @@ jobs:
           source "$(pwd)/scripts/QuantumRom.sh"
 
           if [ "${{ github.event.inputs.ADD_SAMSUNG_FLAGSHIP_APPS }}" = "True" ]; then
-              ADD_SAMSUNG_FLAGSHIP_APPS is the FIRM_DIR/$TARGET_DEVICE"
+              ADD_SAMSUNG_FLAGSHIP_APPS "$FIRM_DIR/$TARGET_DEVICE"
           fi
 
       - name: Add custom features
