@@ -141,10 +141,17 @@ jobs:
           APKTOOL="$(pwd)/bin/java/apktool.jar"
           STOCK_DEVICE="${{ github.event.inputs.STOCK_DEVICE }}"
           TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          PATCH_FLAG_SECURE="${{ github.event.inputs.PATCH_FLAG_SECURE }}"
+          PATCH_SECURE_FOLDER="${{ github.event.inputs.PATCH_SECURE_FOLDER }}"
+          
           source "$(pwd)/scripts/QuantumRom.sh"
           INSTALL_FRAMEWORK "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/framework-res.apk"
           if [ "$STOCK_DEVICE" != "None" ]; then
               DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/ssrm.jar" "$WORK_DIR"
+          fi
+
+          if [ "$PATCH_FLAG_SECURE" = "TRUE" ]; then
+              DECOMPILE "$APKTOOL" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework" "$FIRM_DIR/$TARGET_DEVICE/system/system/framework/services.jar" "$WORK_DIR"
           fi
  
       - name: Start Rom Build For ${{ github.event.inputs.STOCK_DEVICE }}
