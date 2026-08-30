@@ -186,7 +186,11 @@ class Extractor(object):
                         os.makedirs(dir_target)
                     if os.name == 'posix':
                         os.chmod(dir_target, int(mode, 8))
-                        os.chown(dir_target, uid, gid)
+                        try:
+                            os.chown(dir_target, uid, gid)
+                        except:
+                            print(f"Failed to set permission for: {dir_target}")
+                            pass
                     scan_dir(entry_inode, entry_inode_path)
                     if cap == '' and con == '':
                         tmppath=self.FileName + entry_inode_path
@@ -278,7 +282,11 @@ class Extractor(object):
                         with open(file_target, 'wb') as out:
                             out.write(raw)
                         os.chmod(file_target, int(mode, 8))
-                        os.chown(file_target, uid, gid)
+                        try:
+                            os.chown(file_target, uid, gid)
+                        except:
+                            print(f"Failed to set permission for: {file_target}")
+                            pass
                     if cap == '' and con == '':
                         tmppath=self.FileName + entry_inode_path
                         if (tmppath).find(' ',1,len(tmppath))>0:
