@@ -244,8 +244,8 @@ jobs:
           FIRM_DIR="$(pwd)/FW"
           WORK_DIR="$(pwd)/WORK"
           TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
-          PATCH_SELINUX "$FIRM_DIR/$TARGET_DEVICE"
           source "$(pwd)/scripts/QuantumRom.sh"
+          PATCH_SELINUX "$FIRM_DIR/$TARGET_DEVICE"
           DISABLE_SECURITY "$FIRM_DIR/$TARGET_DEVICE"
           PATCH_BT_LIB "$FIRM_DIR/$TARGET_DEVICE" "$WORK_DIR"
 
