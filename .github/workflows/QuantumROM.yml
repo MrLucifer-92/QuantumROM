@@ -86,7 +86,7 @@ jobs:
 
       - name: Extract firmware img
         run: |
-          source "$(pwd)/scripts/debloat.sh"
+          source "$(pwd)/scripts/QuantumRom.sh"
           EXTRACT_FIRMWARE_IMG "FW/${{ github.event.inputs.TARGET_DEVICE }}" "all"
 
       - name: Decode omc
