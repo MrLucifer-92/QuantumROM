@@ -112,7 +112,18 @@ jobs:
               source "$(pwd)/scripts/debloat.sh"
               DEBLOAT "FW/${{ github.event.inputs.TARGET_DEVICE }}"
           fi
+      
+      - name: Apply stock configuration
+        run: |
+          source "$(pwd)/scripts/debloat.sh"
+          source "$(pwd)/scripts/QuantumRom.sh"
+          STOCK_DEVICE="${{ github.event.inputs.STOCK_DEVICE }}"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
 
+          if [ "$STOCK_DEVICE" != "None" ]; then
+              APPLY_STOCK_CONFIG "$STOCK_DEVICE" "$FIRM_DIR/$TARGET_DEVICE"
+          fi
+          
       - name: Add china smart manager
         run: |
           if [ "${{ github.event.inputs.ADD_CHINA_SMART_MANAGER }}" = "True" ]; then
