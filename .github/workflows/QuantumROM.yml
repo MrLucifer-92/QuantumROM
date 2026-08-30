@@ -91,28 +91,46 @@ jobs:
 
       - name: Download firmware ▶️ ${{ github.event.inputs.TARGET_DEVICE }} - ${{ github.event.inputs.TARGET_DEVICE_CSC }}
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          TARGET_DEVICE_CSC="${{ github.event.inputs.TARGET_DEVICE_CSC }}"
+          TARGET_FW_VERSION="${{ GITHUB.EVENT.INPUTS.TARGET_FW_VERSION }}"
+
           source scripts/QuantumRom.sh
-          DOWNLOAD_FIRMWARE "${{ github.event.inputs.TARGET_DEVICE }}" "${{ github.event.inputs.TARGET_DEVICE_CSC }}" "FW" "${{ github.event.inputs.TARGET_FW_VERSION }}"
+          DOWNLOAD_FIRMWARE "$TARGET_DEVICE" "$TARGET_DEVICE_CSC" "$FIRM_DIR" "$TARGET_FW_VERSION"
 
       - name: Extract firmware
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          
           source scripts/QuantumRom.sh
-          EXTRACT_FIRMWARE "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          EXTRACT_FIRMWARE "$FIRM_DIR/$TARGET_DEVICE"
 
       - name: Extract super img
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+
           source "$(pwd)/scripts/QuantumRom.sh"
-          EXTRACT_SUPER_IMG "FW/${{ github.event.inputs.TARGET_DEVICE }}"
+          EXTRACT_SUPER_IMG "$FIRM_DIR /$TARGET_DEVICE"
 
       - name: Extract firmware img
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+          
           source "$(pwd)/scripts/QuantumRom.sh"
-          EXTRACT_FIRMWARE_IMG "FW/${{ github.event.inputs.TARGET_DEVICE }}" "all"
+          EXTRACT_FIRMWARE_IMG "$FIRM_DIR/$TARGET_DEVICE" "all"
 
       - name: Decode omc
         run: |
+          FIRM_DIR="$(pwd)/FW"
+          OUT_DIR="$(pwd)/OUT"
+          TARGET_DEVICE="${{ github.event.inputs.TARGET_DEVICE }}"
+
           source "$(pwd)/scripts/QuantumRom.sh"
-          DECODE_OMC "FW/${{ github.event.inputs.TARGET_DEVICE }}" "OUT"
+          DECODE_OMC "$FIRM_DIR/$TARGET_DEVICE" "$OUT_DIR"
 
       - name: Debloat Rom
         run: |
