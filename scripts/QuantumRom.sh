@@ -1781,14 +1781,15 @@ FIX_CAMERA() {
 
 APPLY_STOCK_CONFIG() {
     echo " "
-
-	echo -e "Applying $STOCK_DEVICE device config."
-    if [ "$#" -ne 1 ]; then
-        echo -e "Usage: ${FUNCNAME[0]} <EXTRACTED_FIRM_DIR>"
+    if [ "$#" -ne 2 ]; then
+        echo -e "Usage: ${FUNCNAME[0]} <STOCK_DEVICE> <EXTRACTED_FIRM_DIR>"
         return 1
     fi
 
-    local EXTRACTED_FIRM_DIR="$1"
+    local STOCK_DEVICE="$1"
+    local EXTRACTED_FIRM_DIR="$2"
+
+	echo -e "Applying $STOCK_DEVICE device config."
 
 	local SDK="$(GET_PROP "$EXTRACTED_FIRM_DIR" "system" "ro.build.version.sdk_full")"
 
